@@ -537,8 +537,9 @@ voice_assistant:
   # When the voice assistant ends ...
   on_end:
     - wait_until:
-        not:
-          voice_assistant.is_running:
+        condition:
+          not:
+            voice_assistant.is_running:
         timeout: 5s
     # Stop ducking audio.
     - mixer_speaker.apply_ducking:
