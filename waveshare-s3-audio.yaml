@@ -605,6 +605,8 @@ micro_wake_word:
     #gain_factor: 4
   stop_after_detection: false
   models:
+    - model: https://github.com/JohnnyPrimus/Custom_V2_MicroWakeWords/blob/main/models/computer/computer.json
+      id: computer
     - model: https://github.com/kahrendt/microWakeWord/releases/download/okay_nabu_20241226.3/okay_nabu.json
       #probability_cutoff: 0.03 # 0.8
       id: okay_nabu
