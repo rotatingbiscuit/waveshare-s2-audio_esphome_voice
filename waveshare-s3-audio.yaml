@@ -539,6 +539,7 @@ voice_assistant:
     - wait_until:
         not:
           voice_assistant.is_running:
+        timeout: 5s
     # Stop ducking audio.
     - mixer_speaker.apply_ducking:
         id: media_mixing_input
