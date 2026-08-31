@@ -119,6 +119,31 @@ packages:
   waveshare_camera_pkg: github://sw3Dan/waveshare-s2-audio_esphome_voice/waveshare_camera_pkg.yaml@main
 ```
 
+## Wake word selection (runtime, no reflash)
+
+The active wake word is chosen from Home Assistant — no firmware update needed.
+
+The wake word `select` entities are provided by the **Assist Satellite** entity, not by a
+YAML `select:` in this config. To use them:
+
+1. Enable **Assist Satellite** for this device in Home Assistant
+   (Settings → Devices & Services → ESPHome → this device → enable the Assist Satellite
+   entity, or via the Assist Satellite integration). Without this the
+   `select.wake_word` entities stay `unavailable`.
+2. The **"Wake word"** select then lists every model compiled into `micro_wake_word`:
+   `Computer`, `Kenobi`, `Hey Jarvis`, `Okay Nabu` (plus `No wake word`).
+3. Pick a word — the device disables all other models and enables the chosen one
+   immediately. The choice survives reboots (HA stores/restores it).
+
+The default active word on first boot follows the `initial` state of the select; the
+compiled-in models live in the `micro_wake_word:` → `models:` list in
+`waveshare-s3-audio.yaml`. Adding/removing a model there changes the options after the
+next flash.
+
+> Note: do **not** add a custom `select:` that calls `micro_wake_word.enable_model` /
+> `disable_model` to switch words. It conflicts with the native satellite select and can
+> leave multiple models active at once ("wrong word fires"). Use the HA satellite select.
+
 General TODO/wishlist for the device.
 * filter speaker output from mic input using IDF-SR library (IN PROGRESS!)
 * UI: disable LEDS
