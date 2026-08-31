@@ -536,11 +536,18 @@ voice_assistant:
     
   # When the voice assistant ends ...
   on_end:
+    # The reply TTS plays as an announcement AFTER on_end fires (pipeline end is before the
+    # response audio). Wait for the announcement to start, then for it to finish, before resetting
+    # to idle. Otherwise the status ring stays stuck in the replying phase after the response.
+    - wait_until:
+        condition:
+          media_player.is_announcing:
+        timeout: 5s
     - wait_until:
         condition:
           not:
-            voice_assistant.is_running:
-        timeout: 5s
+            media_player.is_announcing:
+        timeout: 10s
     # Stop ducking audio.
     - mixer_speaker.apply_ducking:
         id: media_mixing_input
